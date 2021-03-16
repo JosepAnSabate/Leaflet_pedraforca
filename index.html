@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    <style>
+       body {
+            background: linear-gradient(90deg,seagreen,rgb(207, 150, 177),rgb(101, 101, 240));
+        }
+       #mapid { 
+            height: 180px;
+            border: 6px solid rgb(185, 196, 31);
+            
+            border-radius: 20px 50px;
+            margin: auto;/* centra mapa */
+            margin-top: 35px;
+        }
+        h1 {
+        font-family: fantasy;
+        text-align: center;
+        color: rgb(107, 16, 34);
+        font-size: 50px;
+        margin-top: 30px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <h1>El Pedraforca</h1>
+    <div id="mapid" style="width: 800px; height: 540px; ">
+    <script>
+        var mymap = L.map('mapid').setView([ 42.240, 1.706 ], 11);
+        //afegir un tide layer 42.24041212098194, 1.7066462656219712
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            maxZoom: 18,
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1
+        }).addTo(mymap);
+        //marcadors
+        L.marker([42.240, 1.706]).addTo(mymap)
+		.bindPopup("<b>Massís del pedraforca</b><br />Parc Natural Cadí-Moixeró").openPopup();
+        //afegir cercle
+        var circle = L.circle([42.140, 1.506], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.4,
+            radius: 1700
+        }).addTo(mymap);
+
+        //afegir polígon
+        var polygon = L.polygon([
+            [42.140, 1.55],
+            [42.240, 1.60],
+            [42.230, 1.5]
+        ]).addTo(mymap);
+        //attach info a object
+        circle.bindPopup("Perímetre circular");
+        polygon.bindPopup("Sóc un polígon");  
+        
+    //clic mostrat coord
+    var popup = L.popup();
+
+function onMapClick(e) {
+    popup
+        .setLatLng(e.latlng)
+        .setContent("Heu fet clic a " + e.latlng.toString())
+        .openOn(mymap);
+        }
+
+        mymap.on('click', onMapClick);
+
+    </script>
+    
+    </div>
+    <h3 style="text-align: center; font-size: 25px;">Feu clic per a veure coordenades.</h3>
+</body>
+</html>
